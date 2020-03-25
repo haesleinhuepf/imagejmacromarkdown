@@ -4,3 +4,4 @@
 /target/
 /.idea/
 /script-editor.iml
+*.iml
