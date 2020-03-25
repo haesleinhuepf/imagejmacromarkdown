@@ -9,7 +9,7 @@ with
 
 It is thought for ease of generating tutorials for the ImageJ macro language.
 The plugin is in an early development stage.
-[Feedback](https://github.com/haesleinhuepf/imagejmacromarkdown/issues) is very welcome. 
+[Feedback](https://forum.image.sc/t/imagej-macro-markdown/35470) is very welcome. 
 
 ## Installation
 * Download and install [Fiji](https://fiji.sc/Downloads)
