@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.scijava</groupId>
+        <artifactId>pom-scijava</artifactId>
+        <version>27.0.1</version>
+		<relativePath />
+	</parent>
+
+	<groupId>net.haesleinhuepf</groupId>
+	<artifactId>imagejmacromarkdown_</artifactId>
+	<version>0.1.0</version>
+
+	<name>imagejmacromarkdown</name>
+	<description>imagejmacromarkdown</description>
+	<url>https://github.com/haesleinhuepf/imagejmacromarkdown</url>
+	<inceptionYear>2020</inceptionYear>
+	<organization>
+		<name>MPI CBG</name>
+		<url>http://www.mpi-cbg.de</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Simplified BSD License</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>haesleinhuepf</id>
+			<name>Robert Haase</name>
+			<url>https://haesleinhuepf.net</url>
+			<organization>MPI CBG</organization>
+			<roles>
+				<role>founder</role>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+        <contributor>
+            <name>none</name>
+        </contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>ImageSc Forum</name>
+			<archive>http://image.sc/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/haesleinhuepf/imagejmacromarkdown</connection>
+        <developerConnection>scm:git:git@github.com/haesleinhuepf/imagejmacromarkdown</developerConnection>
+        <tag>HEAD</tag>
+		<url>https://github.com/haesleinhuepf/imagejmacromarkdown</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/haesleinhuepf/imagejmacromarkdown/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>None</system>
+	</ciManagement>
+
+	<properties>
+		<package-name>net.haesleinhuepf</package-name>
+		<license.licenseName>bsd_3</license.licenseName>
+		<license.copyrightOwners>Robert Haase, MPI CBG</license.copyrightOwners>
+		<imagej.app.directory>C:/programs/fiji-win64/Fiji.app/</imagej.app.directory>
+		<!--<imagej.app.directory>/home/haase/programs/fiji/Fiji.app/</imagej.app.directory>-->
+	</properties>
+
+	<dependencies>
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-legacy</artifactId>
+		</dependency>
+
+		<!-- SciJava dependencies -->
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>script-editor</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<version>0.14.0</version>
+		</dependency>
+
+		<!-- Fiji dependencies -->
+		<dependency>
+			<groupId>sc.fiji</groupId>
+			<artifactId>fiji-lib</artifactId>
+		</dependency>
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>imagej.public</id>
+			<url>https://maven.imagej.net/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>clij</id>
+			<url>http://dl.bintray.com/haesleinhuepf/snapshots</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+
+		<repository>
+			<id>bintray-haesleinhuepf-snapshots</id>
+			<name>bintray-snapshots</name>
+			<url>https://api.bintray.com/maven/haesleinhuepf/snapshots/imagejmacromarkdown_/;publish=1</url>
+		</repository>
+
+	</distributionManagement>
+</project>
