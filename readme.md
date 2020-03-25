@@ -1,13 +1,13 @@
 # ImageJ Macro Markdown
 
-ImageJ Macro MarkDown (IJMMD) is a [Fiji](https://fiji.sc) plugin combines the benefits of the 
+ImageJ Macro MarkDown (IJMMD) is a [Fiji](https://fiji.sc) plugin combining the benefits of the 
 [ImageJ Macro language](https://imagej.nih.gov/ij/developer/macro/macros.html)
 with
 [Markdown](https://en.wikipedia.org/wiki/Markdown).
 
 ![Image](images/screenshot.png)
 
-It is thought for ease of generating tutorials for the ImageJ macro language. 
+It is thought for ease of generating tutorials for the ImageJ macro language.
 The plugin is in an early development stage.
 [Feedback](https://github.com/haesleinhuepf/imagejmacromarkdown/issues) is very welcome. 
 
