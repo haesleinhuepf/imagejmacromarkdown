@@ -5,7 +5,7 @@ ImageJ Macro MarkDown (IJMMD) is a [Fiji](https://fiji.sc) plugin combines the b
 with
 [Markdown](https://en.wikipedia.org/wiki/Markdown).
 
-[!Image](https://github.com/haesleinhuepf/imagejmacromarkdown/raw/master/images/screenshot.png)
+![Image](images/screenshot.png)
 
 It is thought for ease of generating tutorials for the ImageJ macro language. 
 The plugin is in an early development stage.
@@ -32,7 +32,7 @@ Thus, .ijmmd files can be executed with the normal Fiji script editior. By switc
 the scripting language to `ImageJ Macro Markdown`, markdown.md and html files are
 generated when running the script.
 
-[!Image](https://github.com/haesleinhuepf/imagejmacromarkdown/raw/master/images/language_selection.png)
+![Image](images/language_selection.png)
 
 More examples can be found in the [macro folder](https://github.com/haesleinhuepf/imagejmacromarkdown/tree/master/src/main/macro).
 
