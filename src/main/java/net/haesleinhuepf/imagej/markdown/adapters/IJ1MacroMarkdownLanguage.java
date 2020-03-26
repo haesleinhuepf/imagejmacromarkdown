@@ -45,7 +45,7 @@ import java.util.List;
  * @author Johannes Schindelin
  * @author Robert Haase
  */
-@Plugin(type = ScriptLanguage.class, name = "IJ1 Macro Markdown")
+@Plugin(type = ScriptLanguage.class, name = "IJ1 Macro Markdown", priority=-1 )
 public class IJ1MacroMarkdownLanguage extends AbstractScriptLanguage {
 
 	@Parameter(required = false)
@@ -58,7 +58,7 @@ public class IJ1MacroMarkdownLanguage extends AbstractScriptLanguage {
 
 	@Override
 	public List<String> getExtensions() {
-		return Arrays.asList("ijmmd");
+		return Arrays.asList("ijm");
 	}
 
 	@Override
