@@ -101,10 +101,14 @@ public class ImagejMacroMarkdownRuntime {
                 if (!getInstance().windowsAndProcessors.keySet().contains(window) || getInstance().windowsAndProcessors.get(window) != ip) {
                     //window.toFront();
                     //imp.show();
-                    WindowManager.setCurrentWindow(window);
-                    ImagePlus windowScreenshot = new ScreenGrabber().captureImage();
-                    getInstance().image_count++;
-                    IJ.saveAs(windowScreenshot, "png", getInstance().temporaryFolder + File.separator + "image_" + getInstance().image_count + ".png");
+                    //WindowManager.setCurrentWindow(window);
+                    //ImagePlus windowScreenshot = new ScreenGrabber().captureImage();
+                    ImagePlus windowScreenshot = grabImage(imp);
+
+                    long timeStamp = System.currentTimeMillis();
+
+                    getInstance().temporaryFolder.mkdirs();
+                    IJ.saveAs(windowScreenshot, "png", getInstance().temporaryFolder + File.separator + "image_" + timeStamp + ".png");
                     //println("<img src=\"image_" + getInstance().image_count + ".png\"/>");
                     println("![Image](image_" + getInstance().image_count + ".png)");
                 }
@@ -112,6 +116,18 @@ public class ImagejMacroMarkdownRuntime {
 
             WindowManager.setCurrentWindow(currentImp.getWindow());
         }
+    }
+
+    private static ImagePlus grabImage(ImagePlus imp) {
+        Roi roi = imp.getRoi();
+        imp.killRoi();
+        ImagePlus duplicate = new Duplicator().run(imp);
+        imp.setRoi(roi);
+
+        duplicate.setRoi(roi);
+        ImagePlus result = duplicate.flatten();
+
+        return result;
     }
 
     String markdown = null;
