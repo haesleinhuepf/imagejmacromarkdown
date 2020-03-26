@@ -5,12 +5,15 @@ import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
 import ij.gui.Roi;
+import ij.measure.ResultsTable;
 import ij.plugin.Duplicator;
 import ij.process.ImageProcessor;
+import ij.text.TextWindow;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,6 +33,7 @@ public class ImagejMacroMarkdownRuntime {
     StringBuilder markdownBuilder;
     StringBuilder logKeeper;
     HashMap<ImageWindow, ImageProcessor> windowsAndProcessors;
+    HashMap<ResultsTable, Integer> tablesAndHashes;
 
     private ImagejMacroMarkdownRuntime(){
         temporaryFolder = new File(IJ.getDirectory("temp") + "ijmarkdown_" + System.currentTimeMillis() + File.separator);
@@ -71,7 +75,53 @@ public class ImagejMacroMarkdownRuntime {
 
             getInstance().windowsAndProcessors.put(window, ip);
         }
+
+        getInstance().tablesAndHashes = new HashMap<>();
+        for (Window window : WindowManager.getAllNonImageWindows()) {
+            if (window instanceof TextWindow) {
+                ResultsTable table = ((TextWindow) window).getResultsTable();
+                if (table != null) {
+                    String tableAsHTML = tableToHTML(table);
+                    getInstance().tablesAndHashes.put(table, tableAsHTML.hashCode());
+                }
+            }
+        }
+
+
         println("```");
+    }
+
+    private static String tableToHTML(ResultsTable table) {
+        if (table == null || table.size() == 0) {
+            return "";
+        }
+
+        StringBuilder tableBuilder = new StringBuilder();
+        String[] headings = table.getHeadings();
+        if (headings.length == 0) {
+            return "";
+        }
+
+        tableBuilder.append("<table>\n");
+
+        tableBuilder.append("<tr>");
+        for (String header : headings) {
+            tableBuilder.append("<th>" + header + "</th>");
+        }
+        tableBuilder.append("</tr>\n");
+
+        for (int row = 0; row < table.size(); row++) {
+
+            tableBuilder.append("<tr>");
+            for (String header : headings) {
+                int column = table.getColumnIndex(header);
+                tableBuilder.append("<td>" + table.getStringValue(column, row) + "</td>");
+            }
+            tableBuilder.append("</tr>\n");
+        }
+
+        tableBuilder.append("</table>\n");
+        return tableBuilder.toString();
     }
 
     public static void macroToMarkdownSwitch() {
@@ -117,6 +167,29 @@ public class ImagejMacroMarkdownRuntime {
             }
 
             WindowManager.setCurrentWindow(currentImp.getWindow());
+        }
+
+        // Handle recently changed tables
+        for (Window window : WindowManager.getAllNonImageWindows()) {
+            if (window instanceof TextWindow) {
+                ResultsTable table = ((TextWindow) window).getResultsTable();
+                if (table != null) {
+                    String tableAsHTML = tableToHTML(table);
+                    boolean writeTable = false;
+                    if (!getInstance().tablesAndHashes.containsKey(table)) {
+                        writeTable = true;
+                    } else {
+                        int hash = tableAsHTML.hashCode();
+
+                        if (getInstance().tablesAndHashes.get(table) != hash) {
+                            writeTable = true;
+                        }
+                    }
+                    if (writeTable) {
+                        println(tableAsHTML);
+                    }
+                }
+            }
         }
     }
 
@@ -201,6 +274,8 @@ public class ImagejMacroMarkdownRuntime {
         header.append("h1{font-size:28px}\n");
         header.append("h2{color:#393939}\n");
         header.append("h3,h4,h5,h6{color:#494949}\n");
+        header.append("table{padding:5px 5px;}\n");
+        header.append("th, td{font-family:Helvetica, Arial;margin:10px 10px 10px 10px; border: 1px solid #dddddd; padding: 15px;}}\n");
         header.append("</style>\n");
         header.append("</head>\n");
 

@@ -44,6 +44,15 @@ run("Analyze Particles...", "  show=[Count Masks]");
 run("glasbey", "display=[Count Masks of blobs.gif] view=net.imagej.display.DefaultDatasetView@319f6c19");
 
 /*
+Let's see if we can also work with tables.
+
+We start with a simple measurement
+*/
+run("Set Measurements...", "area mean center redirect=None decimal=3");
+run("Measure");
+
+
+/*
 Let's open a stack
 */
 
