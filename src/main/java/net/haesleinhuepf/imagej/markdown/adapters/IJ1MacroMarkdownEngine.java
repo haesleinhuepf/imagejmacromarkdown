@@ -30,6 +30,7 @@
 package net.haesleinhuepf.imagej.markdown.adapters;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,6 +43,7 @@ import net.haesleinhuepf.imagej.markdown.ImagejMacroMarkdownRuntime;
 import net.imagej.legacy.IJ1Helper;
 
 import net.imagej.legacy.plugin.IJ1MacroEngine;
+import org.scijava.ui.swing.script.TextEditor;
 
 /**
  * A JSR-223-compliant script engine for the ImageJ 1.x macro + markdown language.
@@ -58,7 +60,17 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 
 	@Override
 	public Object eval(final String macro) throws ScriptException {
+		// Determine current file
+		File currentFile = null;
+		for (TextEditor te : TextEditor.instances) {
+			System.out.println("TE: " + te);
+			if (te.isActive()) {
+				currentFile = te.getEditorPane().getFile();
+				System.out.println("cf: " + currentFile);
+			}
+		}
 
+		// save content of the log window for later
 		String formerLog = IJ.getLog();
 		if (formerLog == null) {
 			formerLog = "";
@@ -66,13 +78,15 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 
 		System.out.println("Hello markdown!");
 
-		ImagejMacroMarkdownParser ijmmdParser = new ImagejMacroMarkdownParser(macro);
+		ImagejMacroMarkdownParser ijmmdParser = new ImagejMacroMarkdownParser(macro, currentFile);
 		String parsedMacro = ijmmdParser.parse();
 
 		System.out.println("--------------------------------------------------- macro");
 		System.out.println(parsedMacro);
 
 		Object result = super.eval(parsedMacro);
+
+		// empty log and restore it with former and current content
 		IJ.log("\\Clear");
 
 		IJ.log(formerLog + ImagejMacroMarkdownRuntime.getLog());

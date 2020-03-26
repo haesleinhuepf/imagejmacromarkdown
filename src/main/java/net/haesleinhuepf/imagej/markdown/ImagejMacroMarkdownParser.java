@@ -1,4 +1,7 @@
 package net.haesleinhuepf.imagej.markdown;
+
+import java.io.File;
+
 /**
  * The Parser goes through a macro and generates a new macro which copies the original code step by step and writes
  * a markdown file while executing it.
@@ -10,12 +13,14 @@ public class ImagejMacroMarkdownParser {
     StringBuilder builder;
     StringBuilder codeBuilder;
 
-    public ImagejMacroMarkdownParser(String code) {
+    public ImagejMacroMarkdownParser(String code, File currentFile) {
         this.code = code + "/*\n*/\n";
+        ImagejMacroMarkdownRuntime.reset();
+        ImagejMacroMarkdownRuntime.getInstance().temporaryFolder = new File(currentFile.getParent().toString() + File.separator +
+               "." + currentFile.getName() + "_ijmmdcache" + File.separator);
     }
 
     public String parse() {
-        ImagejMacroMarkdownRuntime.reset();
         builder = new StringBuilder();
         codeBuilder = new StringBuilder();
         String[] lines = code.split("\n");

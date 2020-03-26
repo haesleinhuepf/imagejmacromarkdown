@@ -4,7 +4,8 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
-import ij.plugin.ScreenGrabber;
+import ij.gui.Roi;
+import ij.plugin.Duplicator;
 import ij.process.ImageProcessor;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -23,25 +24,22 @@ import java.util.HashMap;
  * @author Robert Haase
  */
 public class ImagejMacroMarkdownRuntime {
-
     File temporaryFolder;
-    int image_count = 0;
+    private boolean temporaryFolderInitialized = false;
+
     StringBuilder markdownBuilder;
     StringBuilder logKeeper;
     HashMap<ImageWindow, ImageProcessor> windowsAndProcessors;
 
     private ImagejMacroMarkdownRuntime(){
         temporaryFolder = new File(IJ.getDirectory("temp") + "ijmarkdown_" + System.currentTimeMillis() + File.separator);
-        temporaryFolder.mkdirs();
+        temporaryFolderInitialized = false;
         markdownBuilder = new StringBuilder();
         logKeeper = new StringBuilder();
-
-        //markdownBuilder.append("```\n");
-
     }
 
     private static ImagejMacroMarkdownRuntime instance;
-    private static ImagejMacroMarkdownRuntime getInstance() {
+    static ImagejMacroMarkdownRuntime getInstance() {
         if (instance == null) {
             instance = new ImagejMacroMarkdownRuntime();
             markdownToMacroSwitch();
@@ -81,6 +79,8 @@ public class ImagejMacroMarkdownRuntime {
         println("```");
 
         String log = IJ.getLog();
+
+        // Handle the log window
         if (log != null && log.length() > 0) {
             getInstance().logKeeper.append(log);
             println("<pre>");
@@ -89,6 +89,8 @@ public class ImagejMacroMarkdownRuntime {
             println(log);
             println("</pre>");
         }
+
+        // Handle recently opened images
         if (WindowManager.getImageCount() > 0) {
             ImagePlus currentImp = IJ.getImage();
             for (String title : WindowManager.getImageTitles()) {
@@ -107,14 +109,36 @@ public class ImagejMacroMarkdownRuntime {
 
                     long timeStamp = System.currentTimeMillis();
 
-                    getInstance().temporaryFolder.mkdirs();
+                    getInstance().initTemporaryFolder();
                     IJ.saveAs(windowScreenshot, "png", getInstance().temporaryFolder + File.separator + "image_" + timeStamp + ".png");
                     //println("<img src=\"image_" + getInstance().image_count + ".png\"/>");
-                    println("![Image](image_" + getInstance().image_count + ".png)");
+                    println("![Image](image_" + timeStamp + ".png)");
                 }
             }
 
             WindowManager.setCurrentWindow(currentImp.getWindow());
+        }
+    }
+
+    private void initTemporaryFolder() {
+        if (temporaryFolderInitialized) {
+            return;
+        }
+        temporaryFolderInitialized = true;
+
+        // Make new folder if it didn't exist yet
+        getInstance().temporaryFolder.mkdirs();
+
+        // remove files in the temp folder if I likely made them
+        File[] files = temporaryFolder.listFiles();
+        for (File file : files) {
+            if (!file.isDirectory() && (
+                    (file.getName().startsWith("image_") && file.getName().endsWith(".png")) ||
+                            (file.getName().startsWith("temp_") && file.getName().endsWith(".md")) ||
+                            (file.getName().startsWith("temp_") && file.getName().endsWith(".html"))
+            )) {
+                file.delete();
+            }
         }
     }
 
@@ -143,6 +167,7 @@ public class ImagejMacroMarkdownRuntime {
 
     public static String getMarkdownFilename() {
         String filename = getInstance().temporaryFolder+ File.separator  + "temp_" + System.currentTimeMillis() + ".md";
+        getInstance().temporaryFolder.mkdirs();
         writeFile(filename, getMarkdown());
         return filename;
     }
@@ -184,6 +209,7 @@ public class ImagejMacroMarkdownRuntime {
 
     public static String getHtmlFilename() {
         String filename = getInstance().temporaryFolder + File.separator + "temp_" + System.currentTimeMillis() + ".html";
+        getInstance().temporaryFolder.mkdirs();
         writeFile(filename, getHtml());
         return filename;
     }
@@ -201,4 +227,5 @@ public class ImagejMacroMarkdownRuntime {
     public static String getLog() {
         return getInstance().logKeeper.toString();
     }
+
 }
