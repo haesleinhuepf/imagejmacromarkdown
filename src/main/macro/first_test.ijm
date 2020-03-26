@@ -1,7 +1,7 @@
 /*
 # Hello world
 This is just some text
-* an a bullet point 
+* and a bullet point 
 
 In _italic_ and __bold__
 
