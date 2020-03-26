@@ -161,8 +161,8 @@ public class ImagejMacroMarkdownRuntime {
 
                     getInstance().initTemporaryFolder();
                     IJ.saveAs(windowScreenshot, "png", getInstance().temporaryFolder + File.separator + "image_" + timeStamp + ".png");
-                    //println("<img src=\"image_" + getInstance().image_count + ".png\"/>");
-                    println("![Image](image_" + timeStamp + ".png)");
+                    //println("![Image](image_" + timeStamp + ".png)");
+                    println("<a href=\"image_" + timeStamp + ".png\"><img src=\"image_" + timeStamp + ".png\" width=\"250\" alt=\"" + imp.getTitle() + "\"/></a>");
                 }
             }
 
