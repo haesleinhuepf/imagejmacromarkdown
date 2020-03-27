@@ -22,7 +22,7 @@ print(c);
 You can also combine strings to assemble texts using variables.
 */
 
-name = "Robet";
+name = "Robert";
 welcome = "Hello";
 
 print(welcome + name);
