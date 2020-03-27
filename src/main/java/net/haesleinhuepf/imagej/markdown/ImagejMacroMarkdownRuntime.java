@@ -88,7 +88,7 @@ public class ImagejMacroMarkdownRuntime {
         }
 
 
-        println("```");
+        println("```java");
     }
 
     private static String tableToHTML(ResultsTable table) {
@@ -230,7 +230,7 @@ public class ImagejMacroMarkdownRuntime {
     String markdown = null;
     private void finishMarkdown() {
         markdownBuilder.append("```\n");
-        markdown = markdownBuilder.toString().replace("```\n```\n", "\n");
+        markdown = markdownBuilder.toString().replace("```java\n```\n", "\n");
     }
 
     public static String getMarkdown() {
