@@ -13,9 +13,7 @@ The plugin is in an early development stage.
 
 ## Installation
 * Download and install [Fiji](https://fiji.sc/Downloads)
-* Download the [imagejmacromarkdown_.jar](https://github.com/haesleinhuepf/imagejmacromarkdown/releases/download/0.2.0/imagejmacromarkdown_-0.2.0.jar) and 
-[commonmark-0.14.0.jar](https://repo1.maven.org/maven2/com/atlassian/commonmark/commonmark/0.14.0/commonmark-0.14.0.jar) and
-put them in the `jars` directory of your Fiji installation.
+* Start Fiji and go the menu `Help > Update...`, click on `Manage Update Sites` and activate the `IJMMD` update site. Install updates.
 * Restart Fiji.
 
 ## Examples
