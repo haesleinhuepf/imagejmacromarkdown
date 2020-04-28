@@ -105,7 +105,7 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try {
-				Desktop.getDesktop().browse(new URI("file://" + ImagejMacroMarkdownRuntime.getHtmlFilename().replace("\\", "/")));
+				Desktop.getDesktop().browse(new URI("file://" + ImagejMacroMarkdownRuntime.getHtmlFilename().replace("\\", "/").replace(" ", "%24")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (URISyntaxException e) {
