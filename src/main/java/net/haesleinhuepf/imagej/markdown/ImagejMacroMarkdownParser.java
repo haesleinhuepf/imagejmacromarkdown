@@ -1,5 +1,7 @@
 package net.haesleinhuepf.imagej.markdown;
 
+import ij.IJ;
+
 import java.io.File;
 
 /**
@@ -16,6 +18,9 @@ public class ImagejMacroMarkdownParser {
     public ImagejMacroMarkdownParser(String code, File currentFile) {
         this.code = code + "/*\n*/\n";
         ImagejMacroMarkdownRuntime.reset();
+        if (currentFile == null) {
+            currentFile = new File(IJ.getDirectory("temp") + "temp.ijm");
+        }
         ImagejMacroMarkdownRuntime.getInstance().temporaryFolder = new File(currentFile.getParent().toString() + File.separator +
                "." + currentFile.getName() + "_ijmmdcache" + File.separator);
     }
