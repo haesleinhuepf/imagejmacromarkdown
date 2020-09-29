@@ -68,8 +68,8 @@ public class ImagejMacroMarkdownRuntime {
         IJ.log("\\Clear");
 
         getInstance().windowsAndProcessors = new HashMap<>();
-        for (String title : WindowManager.getImageTitles()) {
-            ImagePlus imp = WindowManager.getImage(title);
+        for (int id : WindowManager.getIDList()) {
+            ImagePlus imp = WindowManager.getImage(id);
             ImageWindow window = imp.getWindow();
             ImageProcessor ip = imp.getProcessor();
 
@@ -143,8 +143,8 @@ public class ImagejMacroMarkdownRuntime {
         // Handle recently opened images
         if (WindowManager.getImageCount() > 0) {
             ImagePlus currentImp = IJ.getImage();
-            for (String title : WindowManager.getImageTitles()) {
-                ImagePlus imp = WindowManager.getImage(title);
+            for (int id : WindowManager.getIDList()) {
+                ImagePlus imp = WindowManager.getImage(id);
                 ImageWindow window = imp.getWindow();
                 ImageProcessor ip = imp.getProcessor();
                 System.out.println(ip.hashCode());
@@ -160,6 +160,10 @@ public class ImagejMacroMarkdownRuntime {
                     long timeStamp = System.currentTimeMillis();
 
                     getInstance().initTemporaryFolder();
+                    if (windowScreenshot.getWidth() < 250) {
+                        float factor = 250 / windowScreenshot.getWidth();
+                        windowScreenshot = new ImagePlus("im", windowScreenshot.getProcessor().resize((int)(windowScreenshot.getWidth() * factor), (int)(windowScreenshot.getHeight() * factor)));
+                    }
                     IJ.saveAs(windowScreenshot, "png", getInstance().temporaryFolder + File.separator + "image_" + timeStamp + ".png");
                     //println("![Image](image_" + timeStamp + ".png)");
                     println("<a href=\"image_" + timeStamp + ".png\"><img src=\"image_" + timeStamp + ".png\" width=\"250\" alt=\"" + imp.getTitle() + "\"/></a>");
