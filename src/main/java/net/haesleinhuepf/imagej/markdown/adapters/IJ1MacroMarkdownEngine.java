@@ -87,10 +87,11 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 		Object result = super.eval(parsedMacro);
 
 		// empty log and restore it with former and current content
-		IJ.log("\\Clear");
-
-		IJ.log(formerLog + ImagejMacroMarkdownRuntime.getLog());
-
+		String new_log = formerLog + ImagejMacroMarkdownRuntime.getLog();
+		if (new_log.length() > 0) {
+			IJ.log("\\Clear");
+			IJ.log(new_log);
+		}
 		String markdown = ImagejMacroMarkdownRuntime.getMarkdown();
 
 		System.out.println("--------------------------------------------------- markdown");
@@ -101,7 +102,7 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 		System.out.println("--------------------------------------------------- html");
 		System.out.println(html);
 
-		IJ.open(ImagejMacroMarkdownRuntime.getMarkdownFilename());
+		//IJ.open(ImagejMacroMarkdownRuntime.getMarkdownFilename());
 
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try {
