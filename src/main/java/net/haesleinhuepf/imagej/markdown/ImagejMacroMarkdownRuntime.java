@@ -68,12 +68,14 @@ public class ImagejMacroMarkdownRuntime {
         IJ.log("\\Clear");
 
         getInstance().windowsAndProcessors = new HashMap<>();
-        for (int id : WindowManager.getIDList()) {
-            ImagePlus imp = WindowManager.getImage(id);
-            ImageWindow window = imp.getWindow();
-            ImageProcessor ip = imp.getProcessor();
+        if (WindowManager.getIDList() != null) {
+            for (int id : WindowManager.getIDList()) {
+                ImagePlus imp = WindowManager.getImage(id);
+                ImageWindow window = imp.getWindow();
+                ImageProcessor ip = imp.getProcessor();
 
-            getInstance().windowsAndProcessors.put(window, ip);
+                getInstance().windowsAndProcessors.put(window, ip);
+            }
         }
 
         getInstance().tablesAndHashes = new HashMap<>();
