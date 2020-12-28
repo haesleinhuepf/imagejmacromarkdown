@@ -102,7 +102,7 @@ public class IJ1MacroMarkdownEngine extends IJ1MacroEngine {
 		System.out.println("--------------------------------------------------- html");
 		System.out.println(html);
 
-		//IJ.open(ImagejMacroMarkdownRuntime.getMarkdownFilename());
+		ImagejMacroMarkdownRuntime.getMarkdownFilename();
 
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try {
