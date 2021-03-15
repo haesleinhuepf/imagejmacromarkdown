@@ -63,7 +63,7 @@ public class ImagejMacroMarkdownParser {
     }
 
     private void println(String line) {
-        builder.append("call(\"net.haesleinhuepf.imagej.markdown.ImagejMacroMarkdownRuntime.println\", \"" + line.replace("\"", "\\\"") + "\");\n");
+        builder.append("call(\"net.haesleinhuepf.imagej.markdown.ImagejMacroMarkdownRuntime.println\", \"" + line.replace("\\", "\\\\").replace("\"", "\\\"") + "\");\n");
     }
     private void exec(String line) {
         codeBuilder.append(line + "\n");
