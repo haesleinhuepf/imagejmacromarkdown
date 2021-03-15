@@ -8,13 +8,13 @@
     <parent>
         <groupId>org.scijava</groupId>
         <artifactId>pom-scijava</artifactId>
-        <version>27.0.1</version>
+        <version>29.2.1</version>
 		<relativePath />
 	</parent>
 
 	<groupId>net.haesleinhuepf</groupId>
 	<artifactId>imagejmacromarkdown_</artifactId>
-	<version>0.3.6</version>
+	<version>0.3.7</version>
 
 	<name>imagejmacromarkdown</name>
 	<description>imagejmacromarkdown</description>
@@ -79,7 +79,7 @@
 		<package-name>net.haesleinhuepf</package-name>
 		<license.licenseName>bsd_3</license.licenseName>
 		<license.copyrightOwners>Robert Haase, MPI CBG</license.copyrightOwners>
-		<imagej.app.directory>C:/programs/fiji-win64/Fiji.app/</imagej.app.directory>
+		<scijava.app.directory>C:/programs/fiji-win64/Fiji.app/</scijava.app.directory>
 		<!--<imagej.app.directory>/home/haase/programs/fiji/Fiji.app/</imagej.app.directory>-->
 	</properties>
 
