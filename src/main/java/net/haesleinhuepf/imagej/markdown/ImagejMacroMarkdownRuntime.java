@@ -1,6 +1,7 @@
 package net.haesleinhuepf.imagej.markdown;
 
 import ij.IJ;
+import ij.ImageListener;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.ImageWindow;
@@ -66,6 +67,7 @@ public class ImagejMacroMarkdownRuntime {
 
     public static void markdownToMacroSwitch() {
         IJ.log("\\Clear");
+        installListeners();
 
         getInstance().windowsAndProcessors = new HashMap<>();
         if (WindowManager.getIDList() != null) {
@@ -132,6 +134,7 @@ public class ImagejMacroMarkdownRuntime {
     }
 
     public static void macroToMarkdownSwitch() {
+        uninstallListeners();
 
         println("```");
 
@@ -202,6 +205,34 @@ public class ImagejMacroMarkdownRuntime {
                 }
             }
         }
+    }
+
+    private static class ImageUpdateListener implements ImageListener{
+        @Override
+        public void imageUpdated(ImagePlus imp) {
+            ImageWindow window = imp.getWindow();
+            getInstance().windowsAndProcessors.remove(window);
+        }
+
+        @Override
+        public void imageOpened(ImagePlus imagePlus) {}
+        @Override
+        public void imageClosed(ImagePlus imagePlus) {}
+    }
+
+    private static ImageUpdateListener listener = null;
+    private static void installListeners() {
+        uninstallListeners();
+        if (listener == null) {
+            listener = new ImageUpdateListener();
+        }
+        ImagePlus.addImageListener(listener);
+    }
+    private static void uninstallListeners() {
+        if (listener == null) {
+            return;
+        }
+        ImagePlus.removeImageListener(listener);
     }
 
     private void initTemporaryFolder() {
