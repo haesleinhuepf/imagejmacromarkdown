@@ -34,6 +34,8 @@ public class ImagejMacroMarkdownRuntime {
     StringBuilder markdownBuilder;
     StringBuilder logKeeper;
     HashMap<ImageWindow, ImageProcessor> windowsAndProcessors;
+    HashMap<ImageWindow, Integer> windowsAndOverlaycounts;
+
     HashMap<ResultsTable, Integer> tablesAndHashes;
 
     private ImagejMacroMarkdownRuntime(){
@@ -70,6 +72,7 @@ public class ImagejMacroMarkdownRuntime {
         installListeners();
 
         getInstance().windowsAndProcessors = new HashMap<>();
+        getInstance().windowsAndOverlaycounts = new HashMap<>();
         if (WindowManager.getIDList() != null) {
             for (int id : WindowManager.getIDList()) {
                 ImagePlus imp = WindowManager.getImage(id);
@@ -77,6 +80,11 @@ public class ImagejMacroMarkdownRuntime {
                 ImageProcessor ip = imp.getProcessor();
 
                 getInstance().windowsAndProcessors.put(window, ip);
+                int overlaycount = -1;
+                if (imp.getOverlay() != null) {
+                    overlaycount = imp.getOverlay().size();
+                }
+                getInstance().windowsAndOverlaycounts.put(window, overlaycount);
             }
         }
 
@@ -159,8 +167,16 @@ public class ImagejMacroMarkdownRuntime {
                 ImageProcessor ip = imp.getProcessor();
                 System.out.println(ip.hashCode());
 
+                int overlaycount = -1;
+                if (imp.getOverlay() != null) {
+                    overlaycount = imp.getOverlay().size();
+                }
 
-                if (!getInstance().windowsAndProcessors.keySet().contains(window) || getInstance().windowsAndProcessors.get(window) != ip) {
+                if ((!getInstance().windowsAndProcessors.keySet().contains(window)) ||
+                        getInstance().windowsAndProcessors.get(window) != ip ||
+                        (!getInstance().windowsAndOverlaycounts.keySet().contains(window)) ||
+                        getInstance().windowsAndOverlaycounts.get(window) != overlaycount)
+                        {
                     //window.toFront();
                     //imp.show();
                     //WindowManager.setCurrentWindow(window);
@@ -212,6 +228,7 @@ public class ImagejMacroMarkdownRuntime {
         public void imageUpdated(ImagePlus imp) {
             ImageWindow window = imp.getWindow();
             getInstance().windowsAndProcessors.remove(window);
+            getInstance().windowsAndOverlaycounts.remove(window);
         }
 
         @Override
