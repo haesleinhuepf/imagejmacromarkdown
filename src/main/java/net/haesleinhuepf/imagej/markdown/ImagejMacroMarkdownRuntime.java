@@ -99,6 +99,7 @@ public class ImagejMacroMarkdownRuntime {
         }
 
         StringBuilder tableBuilder = new StringBuilder();
+
         String[] headings = table.getHeadings();
         if (headings.length == 0) {
             return "";
@@ -117,7 +118,11 @@ public class ImagejMacroMarkdownRuntime {
             tableBuilder.append("<tr>");
             for (String header : headings) {
                 int column = table.getColumnIndex(header);
-                tableBuilder.append("<td>" + table.getStringValue(column, row) + "</td>");
+                if (column >= 0) {
+                    tableBuilder.append("<td>" + table.getStringValue(column, row) + "</td>");
+                } else if (header.compareTo("Label") == 0) { // if column index < 0 it must be the label
+                    tableBuilder.append("<td>" + table.getLabel(row) + "</td>");
+                }
             }
             tableBuilder.append("</tr>\n");
         }
